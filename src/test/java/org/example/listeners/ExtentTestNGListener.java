@@ -8,6 +8,7 @@ import org.example.config.ConfigLoader;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import java.io.File;
 
 public class ExtentTestNGListener implements ITestListener {
     private static ExtentReports extent;
@@ -20,7 +21,12 @@ public class ExtentTestNGListener implements ITestListener {
     @Override
     public void onStart(ITestContext context) {
         // Initialize ExtentReports and Spark reporter
-        ExtentSparkReporter spark = new ExtentSparkReporter("reports/ExtentReport.html");
+        String reportPath = "reports/ExtentReport.html";
+        File reportDir = new File("reports");
+        if (!reportDir.exists()) {
+            reportDir.mkdirs();
+        }
+        ExtentSparkReporter spark = new ExtentSparkReporter(reportPath);
         extent = new ExtentReports();
         extent.attachReporter(spark);
         // Optional: Add system info
